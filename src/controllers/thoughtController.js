@@ -1,3 +1,5 @@
+const { Thought } = require('../models/index');
+
 module.exports = {
   // Get all thoughts, GET
   async getThoughts(req, res) {

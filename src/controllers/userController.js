@@ -1,3 +1,5 @@
+const { User } = require('../models/index');
+
 module.exports = {
   // Get all users, GET
   async getUsers(req, res) {
