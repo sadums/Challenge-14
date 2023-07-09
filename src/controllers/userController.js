@@ -1,9 +1,11 @@
-const { User } = require('../models/index');
+const { User } = require("../models");
 
 module.exports = {
   // Get all users, GET
   async getUsers(req, res) {
     try {
+      const result = await User.find();
+      res.status(200).json(result);
     } catch (e) {
       console.error(e);
       res.status(500).json(e);
@@ -12,6 +14,8 @@ module.exports = {
   //   Get a single user, GET
   async getOneUser(req, res) {
     try {
+      const result = await User.find({ _id: req.params.userId });
+      res.status(200).json(result)
     } catch (e) {
       console.error(e);
       res.status(500).json(e);
@@ -20,6 +24,16 @@ module.exports = {
   //   Create a new user, POST
   async newUser(req, res) {
     try {
+      const user = new User({
+        username: req.body.username,
+        email: req.body.email
+      });
+      await user.save();
+      if(user){
+        res.status(200).json(user);
+      }else{
+        res.status(400).json({ message: "Bad request"});
+      }
     } catch (e) {
       console.error(e);
       res.status(500).json(e);

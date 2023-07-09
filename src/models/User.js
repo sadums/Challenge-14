@@ -12,12 +12,6 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      validate: [
-        (email) => {
-          return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w+)+$/.test(email);
-        },
-        "Invalid email address",
-      ],
     },
     thoughts: [
       {
@@ -35,12 +29,17 @@ const userSchema = new Schema(
   {
     toJSON: {
       virtuals: true,
+      getters: true
     },
     id: false,
   }
 );
 
-userSchema.virtual("friendCount").get(() => {
+userSchema.path('email').validate(function(email){
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w+)+$/.test(email)
+}, 'Name `{VALUE}` is not valid');
+
+userSchema.virtual("friendCount").get(function(){
   return this.friends.length;
 });
 
