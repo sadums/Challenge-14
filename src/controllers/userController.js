@@ -52,6 +52,7 @@ module.exports = {
       );
       if(!result){
         res.status(400).json({message: "unable to find user"});
+        return;
       }
       res.status(200).json(result);
     } catch (e) {
@@ -62,6 +63,8 @@ module.exports = {
   //   Delete a user, DELETE
   async deleteUser(req, res) {
     try {
+      const result = await User.findOneAndDelete({ _id: req.body.userId });
+      res.status(200).json(result);
     } catch (e) {
       console.error(e);
       res.status(500).json(e);
