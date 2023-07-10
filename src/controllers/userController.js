@@ -42,6 +42,18 @@ module.exports = {
   //   Update a user, PUT
   async updateUser(req, res) {
     try {
+      const result = await User.findOneAndUpdate(
+        { _id: req.body.userId },
+        {
+          username: req.body.username,
+          email: req.body.email 
+        },
+        { new: true }
+      );
+      if(!result){
+        res.status(400).json({message: "unable to find user"});
+      }
+      res.status(200).json(result);
     } catch (e) {
       console.error(e);
       res.status(500).json(e);
