@@ -14,8 +14,8 @@ module.exports = {
   //   Get a single user, GET
   async getOneUser(req, res) {
     try {
-      const result = await User.find({ _id: req.params.userId });
-      res.status(200).json(result)
+      const result = await User.findOne({ _id: req.params.userId });
+      res.status(200).json(result);
     } catch (e) {
       console.error(e);
       res.status(500).json(e);
@@ -73,6 +73,12 @@ module.exports = {
   //   Add a friend to a user's friend list, POST
   async newFriend(req, res) {
     try {
+      const result = await User.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $addToSet: { friends: req.params.friendId }},
+        { new: true }
+      );
+      res.status(200).json(result);
     } catch (e) {
       console.error(e);
       res.status(500).json(e);
