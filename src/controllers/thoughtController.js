@@ -5,8 +5,6 @@ module.exports = {
   async getThoughts(req, res) {
     try {
       const result = await Thought.find();
-      console.log("GET");
-      console.log(result);
       res.status(200).json(result);
     } catch (e) {
       console.error(e);
@@ -82,6 +80,14 @@ module.exports = {
   // Create a new reaction, POST
   async newReaction(req, res) {
     try {
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId },
+        { $addToSet: { reactions: req.body }},
+        { new: true }
+      );
+      if(!thought) 
+        return res.status(400).json({ message: "Couldn't add reaction to thought." });
+      res.status(200).json(thought);
     } catch (e) {
       console.error(e);
       res.status(500).json(e);
@@ -90,6 +96,7 @@ module.exports = {
   // Delete a reaction, DELETE
   async deleteReaction(req, res) {
     try {
+      
     } catch (e) {
       console.error(e);
       res.status(500).json(e);
