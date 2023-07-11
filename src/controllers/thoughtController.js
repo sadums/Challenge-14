@@ -5,7 +5,7 @@ module.exports = {
   async getThoughts(req, res) {
     try {
       const result = await Thought.find();
-      console.log("GET")
+      console.log("GET");
       console.log(result);
       res.status(200).json(result);
     } catch (e) {
@@ -28,15 +28,17 @@ module.exports = {
     try {
       const thought = new Thought({
         thoughtText: req.body.thoughtText,
-        username: req.body.username
+        username: req.body.username,
       });
       await thought.save();
       const user = await User.findOneAndUpdate(
         { username: req.body.username },
-        { $addToSet: { thoughts: thought._id }}
+        { $addToSet: { thoughts: thought._id } }
       );
-      if(!user){
-        return res.status(400).json({ message: "Thought created but not added to user" });
+      if (!user) {
+        return res
+          .status(400)
+          .json({ message: "Thought created but not added to user" });
       }
       res.status(200).json(thought);
     } catch (e) {
@@ -52,7 +54,7 @@ module.exports = {
         { thoughtText: req.body.thoughtText },
         { new: true }
       );
-      if(!result){
+      if (!result) {
         return res.status(404).json({ message: "unable to find thought" });
       }
       res.status(200).json(result);
@@ -64,6 +66,14 @@ module.exports = {
   // Delete a thought, DELETE
   async deleteThought(req, res) {
     try {
+      const result = await Thought.findOneAndDelete({
+        _id: req.body.thoughtId,
+      });
+      await User.findOneAndUpdate(
+        { username: result.username },
+        { $pull: { thoughts: req.body.thoughtId } }
+      );
+      res.status(200).json(result);
     } catch (e) {
       console.error(e);
       res.status(500).json(e);
