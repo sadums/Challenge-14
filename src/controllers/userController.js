@@ -51,8 +51,7 @@ module.exports = {
         { new: true }
       );
       if (!result) {
-        res.status(400).json({ message: "unable to find user" });
-        return;
+        return res.status(404).json({ message: "unable to find user" });
       }
       res.status(200).json(result);
     } catch (e) {

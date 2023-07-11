@@ -47,6 +47,15 @@ module.exports = {
   // Update a thought, PUT
   async updateThought(req, res) {
     try {
+      const result = await Thought.findOneAndUpdate(
+        { _id: req.body.thoughtId },
+        { thoughtText: req.body.thoughtText },
+        { new: true }
+      );
+      if(!result){
+        return res.status(404).json({ message: "unable to find thought" });
+      }
+      res.status(200).json(result);
     } catch (e) {
       console.error(e);
       res.status(500).json(e);
