@@ -1,9 +1,11 @@
-const { Thought } = require("../models/index");
+const { User, Thought } = require("../models/index");
 
 module.exports = {
   // Get all thoughts, GET
   async getThoughts(req, res) {
     try {
+      const result = await Thought.find();
+      res.status(200).json(result);
     } catch (e) {
       console.error(e);
       res.status(500).json(e);
@@ -12,6 +14,8 @@ module.exports = {
   // Get a single thought, GET
   async getOneThought(req, res) {
     try {
+      const result = await Thought.findOne({ _id: req.params.thoughtId });
+      res.status(200).json(result);
     } catch (e) {
       console.error(e);
       res.status(500).json(e);

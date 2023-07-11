@@ -26,13 +26,13 @@ module.exports = {
     try {
       const user = new User({
         username: req.body.username,
-        email: req.body.email
+        email: req.body.email,
       });
       await user.save();
-      if(user){
+      if (user) {
         res.status(200).json(user);
-      }else{
-        res.status(400).json({ message: "Bad request"});
+      } else {
+        res.status(400).json({ message: "Bad request" });
       }
     } catch (e) {
       console.error(e);
@@ -46,12 +46,12 @@ module.exports = {
         { _id: req.body.userId },
         {
           username: req.body.username,
-          email: req.body.email 
+          email: req.body.email,
         },
         { new: true }
       );
-      if(!result){
-        res.status(400).json({message: "unable to find user"});
+      if (!result) {
+        res.status(400).json({ message: "unable to find user" });
         return;
       }
       res.status(200).json(result);
@@ -75,7 +75,7 @@ module.exports = {
     try {
       const result = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $addToSet: { friends: req.params.friendId }},
+        { $addToSet: { friends: req.params.friendId } },
         { new: true }
       );
       res.status(200).json(result);
@@ -89,7 +89,7 @@ module.exports = {
     try {
       const result = await User.findOneAndUpdate(
         { _id: req.params.userId },
-        { $pull: {friends: req.params.friendId }},
+        { $pull: { friends: req.params.friendId } },
         { new: true }
       );
 
