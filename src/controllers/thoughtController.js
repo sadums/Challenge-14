@@ -82,11 +82,13 @@ module.exports = {
     try {
       const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $addToSet: { reactions: req.body }},
+        { $addToSet: { reactions: req.body } },
         { new: true }
       );
-      if(!thought) 
-        return res.status(400).json({ message: "Couldn't add reaction to thought." });
+      if (!thought)
+        return res
+          .status(400)
+          .json({ message: "Couldn't add reaction to thought." });
       res.status(200).json(thought);
     } catch (e) {
       console.error(e);
@@ -98,11 +100,13 @@ module.exports = {
     try {
       const thought = await Thought.findOneAndUpdate(
         { _id: req.params.thoughtId },
-        { $pull: { reactions: { reactionId: req.body.reactionId} }},
+        { $pull: { reactions: { reactionId: req.body.reactionId } } },
         { new: true }
       );
-      if(!thought) 
-        return res.status(400).json({ message: "Couldn't add reaction to thought." });
+      if (!thought)
+        return res
+          .status(400)
+          .json({ message: "Couldn't add reaction to thought." });
       res.status(200).json(thought);
     } catch (e) {
       console.error(e);
