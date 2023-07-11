@@ -5,6 +5,8 @@ module.exports = {
   async getThoughts(req, res) {
     try {
       const result = await Thought.find();
+      console.log("GET")
+      console.log(result);
       res.status(200).json(result);
     } catch (e) {
       console.error(e);
@@ -24,6 +26,19 @@ module.exports = {
   // Create a new thought, POST
   async newThought(req, res) {
     try {
+      const thought = new Thought({
+        thoughtText: req.body.thoughtText,
+        username: req.body.username
+      });
+      await thought.save();
+      const user = await User.findOneAndUpdate(
+        { username: req.body.username },
+        { $addToSet: { thoughts: thought._id }}
+      );
+      if(!user){
+        return res.status(400).json({ message: "Thought created but not added to user" });
+      }
+      res.status(200).json(thought);
     } catch (e) {
       console.error(e);
       res.status(500).json(e);
