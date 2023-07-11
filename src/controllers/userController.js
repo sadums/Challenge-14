@@ -87,6 +87,13 @@ module.exports = {
   //   Delete a friend from a user's friend list, DELETE
   async deleteFriend(req, res) {
     try {
+      const result = await User.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $pull: {friends: req.params.friendId }},
+        { new: true }
+      );
+
+      res.status(200).json(result);
     } catch (e) {
       console.error(e);
       res.status(500).json(e);
