@@ -11,6 +11,7 @@ This is a RESTful API for a social network web application that allows users to 
 - [Technologies Used](#technologies-used)
 - [Contributing](#contributing)
 - [License](#license)
+- [Questions](#questions)
 
 ## Installation
 
@@ -69,6 +70,13 @@ The API provides the following routes:
 
 - `POST /api/users/:userId/friends/:friendId`: Add a friend to a user's friend list.
 - `DELETE /api/users/:userId/friends/:friendId`: Remove a friend from a user's friend list.
+
+## Technologies Used
+
+- Express.js
+- MongoDB
+- Mongoose
+- JavaScript
 
 ## Contributing
 
